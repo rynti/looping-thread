@@ -35,6 +35,7 @@ LoopingThread::~LoopingThread() {
 void LoopingThread::runCallbacks() {
   this->callbacksMutex.lock();
   if (this->scheduledCallbacks.size() > 0) {
+    // This is to allow for new callbacks to be scheduled from within a callback
     std::vector<std::function<void()>> currentCallbacks = std::move(this->scheduledCallbacks);
     this->scheduledCallbacks.clear();
     this->callbacksMutex.unlock();
@@ -48,7 +49,6 @@ void LoopingThread::runCallbacks() {
 
 void LoopingThread::run() {
   for (;;) {
-    // This is to allow for new callbacks to be scheduled from within a callback
     this->runCallbacks();
 
     // Run the tick
