@@ -89,8 +89,7 @@ void doLongAsyncTask() {
 
 int main() {
   doLongAsyncTask();
-  MainThread::getInstance().start();
-  MainThread::getInstance().join();
+  MainThread::getInstance().run();
 }
 
 
